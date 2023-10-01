@@ -1,0 +1,18 @@
+.split {
+  display: flex;
+  flex-direction: row;
+}
+
+.gutter {
+  background-color: #20242B;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.gutter:hover {
+  background-color: #626466;
+}
+
+.gutter.gutter-horizontal {
+  cursor: col-resize;
+}

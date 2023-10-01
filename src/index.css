@@ -1,0 +1,217 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: "Lexend Deca", sans-serif;
+
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: #dfdfdf;
+}
+
+#root {
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow: hidden;
+}
+
+.right-side {
+  background-color: hsl(218, 15%, 15%);
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: auto;
+}
+
+.left-side {
+  background-color: #272b34;
+  height: 100vh;
+}
+
+.sidePanelContainer {
+  max-width: max-content;
+  margin: auto;
+  margin-top: 40px;
+}
+
+.add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.add img {
+  height: 26px;
+}
+
+.folderAndFilesContainer {
+  margin-top: 30px;
+  width: 200px;
+}
+
+.sidePanelContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidePanelContainer figure {
+  margin: 0;
+}
+
+.fileWithoutFolder,
+.file,
+.folder,
+.add img {
+  user-select: none;
+  cursor: pointer;
+}
+
+.fileWithoutFolder {
+  margin: 0;
+  font-size: 16px;
+}
+
+.folderContainer ul {
+  margin-left: 6px;
+  padding: 0;
+  list-style: none;
+  color: #626466;
+  margin: 0;
+}
+
+.folder {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  gap: 12px;
+}
+
+.folderIconWrapper {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.folder img {
+  width: 14px;
+  margin: 0;
+}
+
+.folder:hover {
+  background-color: #6264667a;
+}
+
+.folderName {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.file {
+  padding-left: 40px;
+  border-left: 1px solid #626466;
+  margin-left: 15px;
+  padding-top: 3px;
+}
+
+.file:hover,
+.fileWithoutFolder:hover {
+  color: white;
+  background-color: #6264667a;
+}
+
+.fileWithoutFolder {
+  margin-top: 3px;
+  margin-left: 35px;
+  color: #626466;
+}
+
+.markdownWrapper {
+  height: 100%;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.markdownWrapper a {
+  text-decoration: none;
+  color: #48baff;
+}
+
+.markdownWrapper img {
+  width: 90%;
+}
+
+.markdownWrapper h1,
+.markdownWrapper h2,
+.markdownWrapper h3,
+.markdownWrapper h4 {
+  color: #e1ac4c;
+}
+
+/* .markdownWrapper code {
+  background-color: #343941;
+  border-radius: 6px;
+} */
+
+.markdownWrapper h1 > code {
+  padding: 0 0.2em;
+  border-radius: 6px;
+}
+
+.markdownWrapper th,
+.markdownWrapper td {
+  padding: 6px 13px;
+  border: 1px solid #626466;
+}
+
+.modes {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 40px;
+  right: 60px;
+  gap: 18px;
+}
+
+.modes img {
+  width: 26px;
+  cursor: pointer;
+}
+
+.editiorWrapper {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.editior {
+  min-height: 99%;
+  background-color: hsl(218, 15%, 15%);
+  margin: 0;
+  width: 100%;
+  border: none;
+  outline: none;
+  padding-left: 20%;
+  padding-top: 40px;
+  font-family: inherit;
+  color: #dfdfdf;
+  resize: none;
+  font-size: 16px;
+}
