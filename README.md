@@ -1,14 +1,9 @@
 # Keeper - A Markdown Editor and Previewer
 
 ## Table of Contents
-- [Inspiration](#inspiration)
 - [Installation](#installation)
+- [Why we built Keeper](#why-we-built-keeper)
 - [What it does](#what-it-does)
-- [How we built it](#how-we-built-it)
-- [Challenges we ran into](#challenges-we-ran-into)
-- [Accomplishments that we're proud of](#accomplishments-that-were-proud-of)
-- [What we learned](#what-we-learned)
-- [What's next for Keeper](#whats-next-for-keeper)
 
 ## 🛠️ Installation
 
