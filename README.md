@@ -16,7 +16,7 @@
 5. Visit [http://localhost:3000](http://localhost:3000) to view the application
 
 ## Why We Built Keeper?
-**Keeper** is a markdown editor and previewer born out of the need for a cleaner and more functional markdown editor. Many existing editors were cluttered with features, lacking functionalities like text-to-speech and comprehensive code syntax highlighting. This project was inspired by the desire to create a markdown editor that is both minimalist and feature-rich.
+**Keeper** is a markdown editor and previewer. Many existing editors were bolted with features, lacking functionalities like text-to-speech and comprehensive code syntax highlighting. This project was inspired by the desire to create a markdown editor that is both minimalist and feature-rich.
 
 ## What It Does
 **Keeper** is a markdown editor and previewer that brings together the best of both worlds. Here's what it offers:
