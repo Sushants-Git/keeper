@@ -32,3 +32,9 @@ First of all, thanks a lot for taking the time to contribute. It must have been 
 To make a contribution you can open up an issue and let us know what you want to improve in the app , so that we can assign you to it.
 
 HAPPY CODING !!!
+
+## Code of Conduct
+
+- Before opening up a new issue please make sure that there is no duplicate issue regarding that topic. 
+- While making a pull request for the issue make sure to write down the issue number with it like for example `Fixing slow rendering bug #141`
+- Please keep be civil and respectful to all!!
