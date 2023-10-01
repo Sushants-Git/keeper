@@ -5,7 +5,7 @@ function Editior({ setText, currentFile, currentMode }) {
     <section className="editiorWrapper">
       <textarea
         name="editior"
-        className="editior"
+        className= {currentMode === "Split" ? "split-editior" : "editior"}
         rows={4}
         cols={21}
         value={currentFile.content}

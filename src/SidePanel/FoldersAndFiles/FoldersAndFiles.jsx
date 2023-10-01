@@ -11,11 +11,12 @@ function FoldersAndFiles({
   folderToggle,
   createFile,
   currentFile,
+  createFolder
 }) {
   return (
     <>
       <div className="add">
-        <img src={addFolder} alt="" />
+        <img src={addFolder} onClick={() => createFolder()} alt="" />
         <img onClick={() => createFile()} src={addFile} alt="" />
         <img src={sort} alt="" />
       </div>

@@ -1,6 +1,6 @@
 import FoldersAndFiles from "./FoldersAndFiles/FoldersAndFiles";
 
-function SidePanel({ notes, setCurrent, folderToggle,createFile,currentFile }) {
+function SidePanel({ notes, setCurrent, folderToggle,createFile,currentFile,createFolder }) {
   return (
     <div className="sidePanelContainer">
       <FoldersAndFiles
@@ -9,6 +9,7 @@ function SidePanel({ notes, setCurrent, folderToggle,createFile,currentFile }) {
         folderToggle={folderToggle}
         createFile={createFile}
         currentFile={currentFile}
+        createFolder={createFolder}
       />
     </div>
   );

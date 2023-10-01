@@ -3,6 +3,7 @@ import Markdown from "react-markdown";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import remarkGfm from "remark-gfm";
+import TextToSpeech from "./TextToSpeech";
 
 const CodeRenderer = ({ node, inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || "");
@@ -33,12 +34,12 @@ const Preview = React.memo(({ content }) => {
   return (
     <section style={{ maxWidth: "70%", margin: "auto" }}>
       <div className="markdownWrapper">
-        <Markdown
-          remarkPlugins={[remarkGfm]}
-          components={memoizedComponents}
-        >
+        <Markdown remarkPlugins={[remarkGfm]} components={memoizedComponents}>
           {content}
         </Markdown>
+      </div>
+      <div className="text-to-speech">
+        <TextToSpeech text={content} />
       </div>
     </section>
   );

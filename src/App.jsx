@@ -20,7 +20,7 @@ function App() {
   );
   const [currentNoteId, setCurrentNoteId] = useState(currentFile.id);
 
-  console.log(currentFile);
+  // console.log(currentFile);
 
   function setCurrent(id) {
     setCurrentFolder((prevValue) => {
@@ -65,10 +65,11 @@ function App() {
     });
   }
 
-  function createFile(id) {
+  function createFile() {
     let fileName = prompt("File Name :");
+    let id = uuidv4();
     let createdFile = {
-      id: uuidv4(),
+      id: id,
       name: fileName,
       dateOfCreation: new Date(),
       content: `# ${fileName}`,
@@ -77,6 +78,7 @@ function App() {
       setNotes((prevValue) => [...prevValue, createdFile]);
       setCurrentFile((prevValue) => createdFile);
       setCurrentFolder((prevValue) => null);
+      setCurrentNoteId(id);
     }
   }
 
@@ -104,6 +106,24 @@ function App() {
     });
 
     setCurrentNoteId((prevValue) => id);
+  }
+
+  function createFolder() {
+    let folderName = prompt("Folder Name :");
+    let id = uuidv4();
+    let createFolder = {
+      id: id,
+      name: folderName,
+      state: "Closed",
+      noOfSubFolders: 1,
+      isFolder: true,
+      dateOfCreation: new Date(),
+      files: [],
+    };
+
+    if (createFolder.name) {
+      setNotes((prevValue) => [...prevValue, createFolder]);
+    }
   }
 
   useEffect(() => {
@@ -134,10 +154,14 @@ function App() {
       {currentMode === "Split" ? (
         <Split className="split" sizes={[50, 50]} gutterSize={2}>
           <div className="left-side">
-            <Editior setText={setText} currentFile={currentFile} currentMode={currentMode}/>
+            <Editior
+              setText={setText}
+              currentFile={currentFile}
+              currentMode={currentMode}
+            />
           </div>
           <div className="right-side">
-            <Preview content={currentFile.content} currentMode={currentMode}/>
+            <Preview content={currentFile.content} currentMode={currentMode} />
           </div>
         </Split>
       ) : (
@@ -149,6 +173,7 @@ function App() {
               setCurrent={setCurrent}
               folderToggle={folderToggle}
               createFile={createFile}
+              createFolder={createFolder}
             />
           </div>
           <div className="right-side">
@@ -158,7 +183,11 @@ function App() {
                 currentMode={currentMode}
               />
             ) : (
-              <Editior setText={setText} currentFile={currentFile} currentMode={currentMode}/>
+              <Editior
+                setText={setText}
+                currentFile={currentFile}
+                currentMode={currentMode}
+              />
             )}
           </div>
         </Split>

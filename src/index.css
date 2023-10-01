@@ -206,12 +206,52 @@ body {
   background-color: hsl(218, 15%, 15%);
   margin: 0;
   width: 100%;
+  padding-right: 90px;
   border: none;
   outline: none;
-  padding-left: 20%;
+  padding-left: 18%;
   padding-top: 40px;
   font-family: inherit;
   color: #dfdfdf;
   resize: none;
   font-size: 16px;
+}
+
+.split-editior {
+  min-height: 99%;
+  background-color: hsl(218, 15%, 15%);
+  margin: 0;
+  width: 100%;
+  padding-right: 50px;
+  border: none;
+  outline: none;
+  padding-left: 10%;
+  padding-top: 40px;
+  font-family: inherit;
+  color: #dfdfdf;
+  resize: none;
+  font-size: 16px;
+}
+
+.text-to-speech{
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 40px;
+  right: 60px;
+  gap: 18px;
+}
+
+.text-to-speech-container button{
+  border: 2px solid rgb(72, 186, 255);
+  color: inherit;
+  font-size: 1rem;
+  background-color: hsl(218, 15%, 15%);
+  font-family: inherit;
+}
+
+.text-to-speech-container {
+  display: flex;
+  gap: 10px;
 }
