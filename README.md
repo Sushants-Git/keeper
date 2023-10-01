@@ -1,4 +1,4 @@
-# Keeper - A minimal markdown editor!!
+# Keeper - A minimal and modern markdown editor!!
 
 ## Table of Contents
 - [Installation](#installation)
