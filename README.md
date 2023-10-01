@@ -34,7 +34,6 @@ First of all, thanks a lot for taking the time to contribute. It must have been 
 To make a contribution, you can open up an issue and let us know what you want to improve in the app, so that we can assign you to it.
 
 HAPPY CODING!!!
-
 [Contribution](https://github.com/Sushants-Git/keeper/blob/main/CONTRIBUTING)
 
 ## Code of Conduct
@@ -42,5 +41,4 @@ HAPPY CODING!!!
 - Before opening up a new issue, please make sure that there is no duplicate issue regarding that topic.
 - When making a pull request for the issue, make sure to write down the issue number with it, like for example `Fixing slow rendering bug #141`.
 - Please keep the discussion civil and be respectful to all!!
-
 [Code of Conduct](https://github.com/Sushants-Git/keeper/blob/main/CODE_OF_CONDUCT.md)
