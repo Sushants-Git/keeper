@@ -4,6 +4,9 @@
 - [Installation](#installation)
 - [Why we built Keeper](#why-we-built-keeper)
 - [What it does](#what-it-does)
+- [Major libraries used](#major-libraries-used)
+- [Contribution](#contribution)
+- [Code of Conduct](#code-of-conduct)
 
 ## 🛠️ Installation
 1. Clone the repository by `git clone https://github.com/chingu-voyages/v45-tier1-team-01.git`
