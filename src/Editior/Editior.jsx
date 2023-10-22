@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 function Editior({ setText, currentFile, currentMode }) {
   return (
     <section className="editiorWrapper">

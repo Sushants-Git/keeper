@@ -11,15 +11,20 @@ function FoldersAndFiles({
   folderToggle,
   createFile,
   currentFile,
-  createFolder
+  createFolder,
 }) {
   return (
     <>
       <div className="add">
-        <img src={addFolder} onClick={() => createFolder()} alt="" />
-        <img onClick={() => createFile()} src={addFile} alt="" />
-        <img src={sort} alt="" />
+        <img
+          src={addFolder}
+          onClick={() => createFolder()}
+          alt="createFolder"
+        />
+        <img src={addFile} onClick={() => createFile()} alt="createFile" />
+        <img src={sort} alt="sort" />
       </div>
+
       <div className="folderAndFilesContainer">
         {notes.map((dataPoint) =>
           dataPoint.files === undefined ? (

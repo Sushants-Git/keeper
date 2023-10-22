@@ -20,8 +20,6 @@ function App() {
   );
   const [currentNoteId, setCurrentNoteId] = useState(currentFile.id);
 
-  // console.log(currentFile);
-
   function setCurrent(id) {
     setCurrentFolder((prevValue) => {
       let found = notes.find((note) => {
@@ -161,7 +159,7 @@ function App() {
             />
           </div>
           <div className="right-side">
-            <Preview content={currentFile.content} currentMode={currentMode} />
+            <Preview content={currentFile.content} />
           </div>
         </Split>
       ) : (
@@ -178,10 +176,7 @@ function App() {
           </div>
           <div className="right-side">
             {currentMode === "Preview" ? (
-              <Preview
-                content={currentFile.content}
-                currentMode={currentMode}
-              />
+              <Preview content={currentFile.content} />
             ) : (
               <Editior
                 setText={setText}
