@@ -1,4 +1,4 @@
-function GenerateFile({ dataPoint, setCurrent,currentFile }) {
+function GenerateFile({ dataPoint, setCurrent, currentFile, deleteFile }) {
   return (
     <p
       data-id={dataPoint.id}

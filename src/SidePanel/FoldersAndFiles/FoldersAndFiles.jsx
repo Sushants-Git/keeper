@@ -12,6 +12,7 @@ function FoldersAndFiles({
   createFile,
   currentFile,
   createFolder,
+  deleteFile
 }) {
   return (
     <>
@@ -33,6 +34,7 @@ function FoldersAndFiles({
               setCurrent={setCurrent}
               currentFile={currentFile}
               key={dataPoint.id}
+              deleteFile={deleteFile}
             />
           ) : (
             <GenerateFolder

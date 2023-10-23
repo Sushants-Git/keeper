@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import SidePanel from "./SidePanel/SidePanel";
-import Split from "react-split";
-import data from "./data/data";
-import { v4 as uuidv4 } from "uuid";
+import { useEffect, useState, useCallback } from "react";
+
 import Editior from "./Editior/Editior";
 import Preview from "./Preview/Preview";
 import Modes from "./Modes/Modes";
+import SidePanel from "./SidePanel/SidePanel";
+import data from "./data/data";
 
-import "./Split.css";
+import Split from "react-split";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const [notes, setNotes] = useState(data);
@@ -20,34 +20,37 @@ function App() {
   );
   const [currentNoteId, setCurrentNoteId] = useState(currentFile.id);
 
-  function setCurrent(id) {
-    setCurrentFolder((prevValue) => {
-      let found = notes.find((note) => {
-        if (note.files) {
-          return note.files.find((file) => file.id === id);
-        }
-        return note.id === id;
+  const setCurrent = useCallback(
+    (id) => {
+      setCurrentFolder((prevValue) => {
+        let found = notes.find((note) => {
+          if (note.files) {
+            return note.files.find((file) => file.id === id);
+          }
+          return note.id === id;
+        });
+
+        found.files ? found : null;
       });
 
-      found.files ? found : null;
-    });
-
-    setCurrentFile((prevValue) => {
-      let found = null;
-      notes.forEach((note) => {
-        if (note.files) {
-          note.files.forEach((file) => {
-            if (file.id === id) {
-              found = file;
-            }
-          });
-        } else if (note.id === id) {
-          found = note;
-        }
+      setCurrentFile((prevValue) => {
+        let found = null;
+        notes.forEach((note) => {
+          if (note.files) {
+            note.files.forEach((file) => {
+              if (file.id === id) {
+                found = file;
+              }
+            });
+          } else if (note.id === id) {
+            found = note;
+          }
+        });
+        return found;
       });
-      return found;
-    });
-  }
+    },
+    [notes]
+  );
 
   function folderToggle(id) {
     setNotes((prevValue) => {
@@ -124,27 +127,42 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    setCurrentFile((prevValue) => {
-      let id = currentNoteId;
-      let temp = notes;
-      let returnValue = null;
-      temp.forEach((note) => {
-        if (note.files) {
-          note.files.forEach((file) => {
-            if (file.id === id) {
-              returnValue = file;
-            }
-          });
-        } else {
-          if (note.id === id) {
-            returnValue = note;
-          }
+  function deleteFile(id) {
+    setNotes((prevValue) => {
+      let temp = [...prevValue];
+      for (let i = 0; i < temp.length; i++) {
+        if (temp[i].id === id) {
+          temp.splice(i, 1);
         }
-      });
-      return returnValue;
+      }
+      return temp;
     });
-  }, [JSON.stringify(notes)]);
+    setCurrentFile((prevValue) => notes[0]);
+    setCurrentNoteId((prevValue) => notes[0].id);
+  }
+
+  // useEffect(() => {
+  //   console.log("Useffect Ran");
+  //   setCurrentFile((prevValue) => {
+  //     let id = currentNoteId;
+  //     let temp = notes;
+  //     let returnValue = null;
+  //     temp.forEach((note) => {
+  //       if (note.files) {
+  //         note.files.forEach((file) => {
+  //           if (file.id === id) {
+  //             returnValue = file;
+  //           }
+  //         });
+  //       } else {
+  //         if (note.id === id) {
+  //           returnValue = note;
+  //         }
+  //       }
+  //     });
+  //     return returnValue;
+  //   });
+  // }, [JSON.stringify(notes)]);
 
   return (
     <>
@@ -163,15 +181,16 @@ function App() {
           </div>
         </Split>
       ) : (
-        <Split className="split" sizes={[16, 84]} gutterSize={2}>
+        <Split className="split" sizes={[25, 75]} gutterSize={2}>
           <div className="left-side">
             <SidePanel
-              notes={notes}
               currentFile={currentFile}
-              setCurrent={setCurrent}
-              folderToggle={folderToggle}
               createFile={createFile}
               createFolder={createFolder}
+              deleteFile={deleteFile}
+              folderToggle={folderToggle}
+              notes={notes}
+              setCurrent={setCurrent}
             />
           </div>
           <div className="right-side">

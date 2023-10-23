@@ -24,17 +24,18 @@ const CodeRenderer = ({ node, inline, className, children, ...props }) => {
 };
 
 const Preview = React.memo(({ content }) => {
-  const memoizedComponents = useMemo(
-    () => ({
-      code: CodeRenderer,
-    }),
-    []
-  );
+  // const memoizedComponents = useMemo(
+  //   () => ({
+  //     code: CodeRenderer,
+  //   }),
+  //   []
+  // );
 
   return (
     <section style={{ maxWidth: "70%", margin: "auto" }}>
       <div className="markdownWrapper">
-        <Markdown remarkPlugins={[remarkGfm]} components={memoizedComponents}>
+        {/* <Markdown remarkPlugins={[remarkGfm]} components={memoizedComponents}> */}
+        <Markdown remarkPlugins={[remarkGfm]}>
           {content}
         </Markdown>
       </div>
