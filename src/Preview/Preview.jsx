@@ -1,9 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useMemo, memo, useContext } from "react";
 import Markdown from "react-markdown";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import remarkGfm from "remark-gfm";
 import TextToSpeech from "./TextToSpeech";
+import { FAFContext } from "../App";
 
 const CodeRenderer = ({ node, inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || "");
@@ -23,19 +24,19 @@ const CodeRenderer = ({ node, inline, className, children, ...props }) => {
   );
 };
 
-const Preview = React.memo(({ content }) => {
-  // const memoizedComponents = useMemo(
-  //   () => ({
-  //     code: CodeRenderer,
-  //   }),
-  //   []
-  // );
+const Preview = memo(() => {
+  const { content } = useContext(FAFContext);
+  const memoizedComponents = useMemo(
+    () => ({
+      code: CodeRenderer,
+    }),
+    []
+  );
 
   return (
     <section style={{ maxWidth: "70%", margin: "auto" }}>
       <div className="markdownWrapper">
-        {/* <Markdown remarkPlugins={[remarkGfm]} components={memoizedComponents}> */}
-        <Markdown remarkPlugins={[remarkGfm]}>
+        <Markdown remarkPlugins={[remarkGfm]} components={memoizedComponents}>
           {content}
         </Markdown>
       </div>

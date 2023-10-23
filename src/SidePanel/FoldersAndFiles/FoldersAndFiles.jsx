@@ -5,25 +5,30 @@ import sort from "../../svg/sort.svg";
 import GenerateFile from "./GenerateFile/GenerateFile";
 import GenerateFolder from "./GenerateFolder/GenerateFolder";
 
+import { FAFContext } from "../../App";
+import { useContext, useEffect } from "react";
+
 function FoldersAndFiles({
   notes,
   setCurrent,
   folderToggle,
   createFile,
-  currentFile,
   createFolder,
-  deleteFile
+  deleteFile,
+  renameFile,
+  sortFiles
 }) {
+  const { currentFile } = useContext(FAFContext);
   return (
     <>
       <div className="add">
-        <img
+        {/* <img
           src={addFolder}
           onClick={() => createFolder()}
           alt="createFolder"
-        />
+        /> */}
         <img src={addFile} onClick={() => createFile()} alt="createFile" />
-        <img src={sort} alt="sort" />
+        <img src={sort} alt="sort" onClick={() => sortFiles()} />
       </div>
 
       <div className="folderAndFilesContainer">
@@ -35,6 +40,7 @@ function FoldersAndFiles({
               currentFile={currentFile}
               key={dataPoint.id}
               deleteFile={deleteFile}
+              renameFile={renameFile}
             />
           ) : (
             <GenerateFolder

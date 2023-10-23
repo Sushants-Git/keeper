@@ -39,6 +39,46 @@ body {
 .left-side {
   background-color: #272b34;
   height: 100vh;
+  position: relative;
+}
+
+.importAndExport {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  gap: 10px;
+}
+
+.importAndExport button{
+  font-family: inherit;
+  font-size:inherit;
+  border: 2px solid #48baff;
+}
+
+.importAndExport button:hover{
+  cursor: pointer;
+}
+
+.importAndExport label {
+  padding: 1px 6px;
+  font-family: inherit;
+  border: 2px solid #48baff;
+}
+
+.importAndExport label:hover{
+  background-color: #6264667a;
+  cursor: pointer;
+}
+
+#upload-file {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
 }
 
 .sidePanelContainer {
@@ -85,6 +125,10 @@ body {
 .fileWithoutFolder {
   margin: 0;
   font-size: 16px;
+  width: 125px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .folderContainer ul {
@@ -134,13 +178,66 @@ body {
 .fileWithoutFolder:hover {
   color: white;
   background-color: #6264667a;
+  border: 1px solid #48baff;
   padding: 5px 0px 5px 20px;
 }
 
 .fileWithoutFolder {
-  margin-top: 3px;
   margin-left: 35px;
   color: #626466;
+}
+
+.generateFile {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.generateFile button {
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0);
+  cursor: pointer;
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.generateFile button:hover {
+  fill: #48baff;
+  border: 1px solid #48baff;
+  background-color: #21252c;
+  border-radius: 100%;
+}
+
+.generateFile img {
+  width: 1rem;
+  height: 1rem;
+}
+
+.menuPopUp {
+  position: absolute;
+  bottom: -225%;
+  right: 15%;
+  z-index: 3;
+}
+
+.menuPopUp ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menuPopUp li {
+  border: 2px solid #48baff;
+  padding: 2px 10px;
+  cursor: pointer;
+  background-color: #21252c;
+}
+
+.menuPopUp li:hover {
+  background-color: #6264667a;
 }
 
 .markdownWrapper {
@@ -234,7 +331,7 @@ body {
   font-size: 16px;
 }
 
-.text-to-speech{
+.text-to-speech {
   position: fixed;
   display: flex;
   justify-content: center;
@@ -244,15 +341,26 @@ body {
   gap: 18px;
 }
 
-.text-to-speech-container button{
-  border: 2px solid rgb(72, 186, 255);
+.text-to-speech-container button {
+  border: 2px solid #48baff;
   color: inherit;
   font-size: 1rem;
   background-color: hsl(218, 15%, 15%);
   font-family: inherit;
 }
 
+.text-to-speech-container button:hover {
+  cursor: pointer;
+  background-color: #626466;
+}
+
 .text-to-speech-container {
   display: flex;
   gap: 10px;
+}
+
+
+::selection {
+  background-color: #9AF8FF;
+  color: #262730;
 }

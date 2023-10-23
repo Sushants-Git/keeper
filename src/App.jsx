@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, createContext, useRef } from "react";
 
 import Editior from "./Editior/Editior";
 import Preview from "./Preview/Preview";
@@ -8,6 +8,8 @@ import data from "./data/data";
 
 import Split from "react-split";
 import { v4 as uuidv4 } from "uuid";
+
+const FAFContext = createContext({});
 
 function App() {
   const [notes, setNotes] = useState(data);
@@ -19,6 +21,24 @@ function App() {
     currentFolder == null ? notes[0] : currentFolder.files[0]
   );
   const [currentNoteId, setCurrentNoteId] = useState(currentFile.id);
+
+  const editiorRef = useRef(null);
+  const previewRef = useRef(null);
+  const importFile = useRef(null);
+
+  const [sorted, setSorted] = useState(false);
+
+  // test();
+
+  function test() {
+    notes.map((note, index) =>
+      console.log(`Notes[${index}].name: ${note.name}\nid: ${note.id}\n`)
+    );
+
+    console.log(
+      `currentFile.name: ${currentFile.name}\ncurrentFolder: ${currentFolder}\ncurrentNoteId: ${currentNoteId}\nDateofCreation: ${currentFile.dateOfCreation}`
+    );
+  }
 
   const setCurrent = useCallback(
     (id) => {
@@ -32,7 +52,6 @@ function App() {
 
         found.files ? found : null;
       });
-
       setCurrentFile((prevValue) => {
         let found = null;
         notes.forEach((note) => {
@@ -48,9 +67,54 @@ function App() {
         });
         return found;
       });
+      setCurrentNoteId((prevValue) => id);
     },
     [notes]
   );
+
+  function exportFiles() {
+    const filename = "data.json";
+    const jsonStr = JSON.stringify(notes);
+
+    let element = document.createElement("a");
+    element.setAttribute(
+      "href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(jsonStr)
+    );
+    element.setAttribute("download", filename);
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+
+  function importFiles(event) {
+    const selectedFile = importFile.current.files[0];
+    let importedNotes = null;
+
+    if (selectedFile) {
+      const reader = new FileReader();
+      let jsonData = null;
+
+      reader.onload = function (e) {
+        const jsonContent = e.target.result;
+        try {
+          jsonData = JSON.parse(jsonContent);
+          setNotes((prevValue) => jsonData);
+          setCurrentFile((prevValue) => jsonData[0]);
+          setCurrentFolder((prevValue) => null);
+          setCurrentNoteId((prevValue) => jsonData[0].id);
+        } catch (error) {
+          alert(`Error parsing JSON:\n ${error.message}`);
+        }
+      };
+
+      reader.readAsText(selectedFile);
+    }
+  }
 
   function folderToggle(id) {
     setNotes((prevValue) => {
@@ -68,18 +132,21 @@ function App() {
 
   function createFile() {
     let fileName = prompt("File Name :");
+    fileName = fileName?.trim();
     let id = uuidv4();
-    let createdFile = {
-      id: id,
-      name: fileName,
-      dateOfCreation: new Date(),
-      content: `# ${fileName}`,
-    };
-    if (createdFile.name) {
+    if (fileName) {
+      let createdFile = {
+        id: id,
+        name: fileName,
+        dateOfCreation: new Date(),
+        content: `# ${fileName}`,
+      };
       setNotes((prevValue) => [...prevValue, createdFile]);
       setCurrentFile((prevValue) => createdFile);
       setCurrentFolder((prevValue) => null);
       setCurrentNoteId(id);
+    } else if (fileName === "") {
+      alert("File Name Cannot be Empty");
     }
   }
 
@@ -111,23 +178,46 @@ function App() {
 
   function createFolder() {
     let folderName = prompt("Folder Name :");
+    folderName = folderName?.trim();
     let id = uuidv4();
-    let createFolder = {
-      id: id,
-      name: folderName,
-      state: "Closed",
-      noOfSubFolders: 1,
-      isFolder: true,
-      dateOfCreation: new Date(),
-      files: [],
-    };
-
-    if (createFolder.name) {
+    if (folderName) {
+      let createFolder = {
+        id: id,
+        name: folderName,
+        state: "Closed",
+        noOfSubFolders: 1,
+        isFolder: true,
+        dateOfCreation: new Date(),
+        files: [],
+      };
       setNotes((prevValue) => [...prevValue, createFolder]);
+    } else if (folderName === "") {
+      alert("Folder Name Cannot be Empty");
     }
   }
 
   function deleteFile(id) {
+    let currentNoteLength = notes.length;
+    if (id === "111" && currentNoteLength === 1) {
+      alert(
+        "** This File Cannot be Deleted **\n It is the only file in your Notes"
+      );
+      return;
+    }
+    if (currentNoteLength === 1) {
+      let id = uuidv4();
+      let fileName = "Empty File";
+      let createdFile = {
+        id: "111",
+        name: fileName,
+        dateOfCreation: new Date(),
+        content: `# ${fileName}`,
+      };
+      setNotes((prevValue) => [createdFile]);
+      setCurrentFile((prevValue) => createdFile);
+      setCurrentNoteId((prevValue) => id);
+      return;
+    }
     setNotes((prevValue) => {
       let temp = [...prevValue];
       for (let i = 0; i < temp.length; i++) {
@@ -138,7 +228,68 @@ function App() {
       return temp;
     });
     setCurrentFile((prevValue) => notes[0]);
+    setCurrentFolder((prevValue) => null);
     setCurrentNoteId((prevValue) => notes[0].id);
+  }
+
+  function renameFile(id) {
+    let newName = prompt("New Name :");
+    newName = newName?.trim();
+    if (newName) {
+      setNotes((prevValue) => {
+        let temp = [...prevValue];
+        temp.forEach((note) => {
+          if (note.files) {
+            note.files.forEach((file) => {
+              if (file.id === id) {
+                file.name = newName;
+              }
+            });
+          } else {
+            if (note.id === id) {
+              note.name = newName;
+            }
+          }
+        });
+        return temp;
+      });
+    } else if (newName === "") {
+      alert("File Name Cannot be Empty");
+    }
+  }
+
+  function sortFiles() {
+    console.log("Running");
+    if (!sorted) {
+      setNotes((prevValue) => {
+        let temp = [...prevValue];
+        temp.sort((a, b) => {
+          if (a.dateOfCreation > b.dateOfCreation) {
+            return -1;
+          }
+          if (a.dateOfCreation < b.dateOfCreation) {
+            return 1;
+          }
+          return 0;
+        });
+        return temp;
+      });
+    } else {
+      setNotes((prevValue) => {
+        let temp = [...prevValue];
+        temp.sort((a, b) => {
+          if (a.dateOfCreation < b.dateOfCreation) {
+            return -1;
+          }
+          if (a.dateOfCreation > b.dateOfCreation) {
+            return 1;
+          }
+          return 0;
+        });
+        return temp;
+      });
+    }
+    setSorted((preValue) => !preValue);
   }
 
   // useEffect(() => {
@@ -164,50 +315,175 @@ function App() {
   //   });
   // }, [JSON.stringify(notes)]);
 
+  // return (
+  //   <>
+  //     <Modes changeMode={changeMode} />
+  //     {currentMode === "Split" ? (
+  //       <Split className="split" sizes={[50, 50]} gutterSize={2}>
+  //         <div className="left-side">
+  //           <Editior
+  //             setText={setText}
+  //             currentFile={currentFile}
+  //             currentMode={currentMode}
+  //           />
+  //         </div>
+  //         <div className="right-side">
+  //           <Preview content={currentFile.content} />
+  //         </div>
+  //       </Split>
+  //     ) : (
+  //       <Split className="split" sizes={[25, 75]} gutterSize={2}>
+  //         <div className="left-side">
+  //           <SidePanel
+  //             currentFile={currentFile}
+  //             createFile={createFile}
+  //             createFolder={createFolder}
+  //             deleteFile={deleteFile}
+  //             folderToggle={folderToggle}
+  //             notes={notes}
+  //             setCurrent={setCurrent}
+  //           />
+  //         </div>
+  //         <div className="right-side">
+  //           {currentMode === "Preview" ? (
+  //             <Preview content={currentFile.content} />
+  //           ) : (
+  //             <Editior
+  //               setText={setText}
+  //               currentFile={currentFile}
+  //               currentMode={currentMode}
+  //             />
+  //           )}
+  //         </div>
+  //       </Split>
+  //     )}
+  //   </>
+  // );
+
+  const sidePanelProps = {
+    createFile,
+    createFolder,
+    deleteFile,
+    folderToggle,
+    notes,
+    renameFile,
+    setCurrent,
+    sortFiles,
+  };
+
   return (
     <>
-      <Modes changeMode={changeMode} />
-      {currentMode === "Split" ? (
-        <Split className="split" sizes={[50, 50]} gutterSize={2}>
-          <div className="left-side">
-            <Editior
-              setText={setText}
-              currentFile={currentFile}
-              currentMode={currentMode}
-            />
-          </div>
-          <div className="right-side">
-            <Preview content={currentFile.content} />
-          </div>
-        </Split>
-      ) : (
-        <Split className="split" sizes={[25, 75]} gutterSize={2}>
-          <div className="left-side">
-            <SidePanel
-              currentFile={currentFile}
-              createFile={createFile}
-              createFolder={createFolder}
-              deleteFile={deleteFile}
-              folderToggle={folderToggle}
-              notes={notes}
-              setCurrent={setCurrent}
-            />
-          </div>
-          <div className="right-side">
-            {currentMode === "Preview" ? (
-              <Preview content={currentFile.content} />
-            ) : (
-              <Editior
-                setText={setText}
-                currentFile={currentFile}
-                currentMode={currentMode}
-              />
-            )}
-          </div>
-        </Split>
-      )}
+      <FAFContext.Provider
+        value={{
+          content: currentFile.content,
+          currentFile,
+          currentMode,
+          setText,
+        }}
+      >
+        <Modes changeMode={changeMode} />
+        {currentMode === "Split" ? (
+          <SplitScreen editiorRef={editiorRef} previewRef={previewRef} />
+        ) : (
+          <NormalScreen
+            sidePanelProps={sidePanelProps}
+            currentMode={currentMode}
+            exportFiles={exportFiles}
+            importFiles={importFiles}
+            importFile={importFile}
+          />
+        )}
+      </FAFContext.Provider>
     </>
+  );
+
+  // return (
+  //   <>
+  //     <Modes changeMode={changeMode} />
+  //     {currentMode === "Split" ? (
+  //       <Split className="split" sizes={[50, 50]} gutterSize={2}>
+  //         <div className="left-side">
+  //           <Editior
+  //             setText={setText}
+  //             currentFile={currentFile}
+  //             currentMode={currentMode}
+  //           />
+  //         </div>
+  //         <div className="right-side">
+  //           <Preview content={currentFile.content} />
+  //         </div>
+  //       </Split>
+  //     ) : (
+  //       <Split className="split" sizes={[25, 75]} gutterSize={2}>
+  //         <div className="left-side">
+  //           <SidePanel
+  //             currentFile={currentFile}
+  //             createFile={createFile}
+  //             createFolder={createFolder}
+  //             deleteFile={deleteFile}
+  //             folderToggle={folderToggle}
+  //             notes={notes}
+  //             setCurrent={setCurrent}
+  //           />
+  //         </div>
+  //         <div className="right-side">
+  //           {currentMode === "Preview" ? (
+  //             <Preview content={currentFile.content} />
+  //           ) : (
+  //             <Editior
+  //               setText={setText}
+  //               currentFile={currentFile}
+  //               currentMode={currentMode}
+  //             />
+  //           )}
+  //         </div>
+  //       </Split>
+  //     )}
+  //   </>
+  // );
+}
+
+function SplitScreen({ editiorRef, previewRef }) {
+  return (
+    <Split className="split" sizes={[50, 50]} gutterSize={2}>
+      <div className="left-side" id="left-side">
+        <Editior editiorRef={editiorRef} previewRef={previewRef} />
+      </div>
+      <div className="right-side" id="right-side" ref={previewRef}>
+        <Preview previewRef={previewRef} />
+      </div>
+    </Split>
+  );
+}
+
+function NormalScreen({
+  sidePanelProps,
+  currentMode,
+  exportFiles,
+  importFiles,
+  importFile,
+}) {
+  return (
+    <Split className="split" sizes={[25, 75]} gutterSize={2}>
+      <div className="left-side">
+        <div className="importAndExport">
+          <button onClick={() => exportFiles()}>Export</button>
+          <label htmlFor="upload-file">Import</label>
+          <input
+            id="upload-file"
+            type="file"
+            ref={importFile}
+            onChange={(event) => importFiles(event)}
+          />
+        </div>
+        <SidePanel {...sidePanelProps} />
+      </div>
+      <div className="right-side">
+        {currentMode === "Preview" ? <Preview /> : <Editior />}
+      </div>
+    </Split>
   );
 }
 
 export default App;
+export { FAFContext };
