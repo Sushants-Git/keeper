@@ -10,7 +10,7 @@
 - [Code of Conduct](#code-of-conduct)
 
 ## 🛠️ Installation
-1. Clone the repository by running `git clone https://github.com/chingu-voyages/v45-tier1-team-01.git`
+1. Clone the repository by running `git clone https://github.com/Sushants-Git/keeper.git`
 2. Run `cd keeper` to change the working directory
 3. Run `npm i` or `npm install` to install all dependencies
 4. Run `npm run dev` to start the application
@@ -23,7 +23,7 @@
 **Keeper** is a markdown editor and previewer that brings together the best of both worlds. Here's what it offers:
 - **Text-to-Speech:** Transform your written notes into spoken words with ease.
 - **Syntax Highlighting:** Enjoy syntax highlighting for a wide range of programming languages, making your code snippets more readable.
-- **Online Database:** Utilizes MongoDB Atlas to securely store your notes online, ensuring accessibility from anywhere.
+- **Import and Export:** Ability to import and export file
 
 ## Major Libraries Used
 Some major libraries used for making Keeper: [react-markdown](https://www.npmjs.com/package/react-markdown), [remark-gfm](https://www.google.com/search?client=firefox-b-d&q=remark-gfm), and [Prism.js](https://prismjs.com/) for syntax highlighting.
