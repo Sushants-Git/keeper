@@ -1,6 +1,6 @@
-import editior from "../svg/editior.svg";
-import preview from "../svg/preview.svg";
-import split from "../svg/split.svg";
+import editior from "../../svg/editior.svg";
+import preview from "../../svg/preview.svg";
+import split from "../../svg/split.svg";
 
 const modes = [
   { modeName: "Editior", imageSrc: editior },

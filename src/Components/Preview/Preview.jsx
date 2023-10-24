@@ -4,7 +4,7 @@ import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import remarkGfm from "remark-gfm";
 import TextToSpeech from "./TextToSpeech";
-import {ContentContext } from "../App";
+import { ContentContext } from "../../App";
 
 const CodeRenderer = ({ node, inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || "");
@@ -26,7 +26,6 @@ const CodeRenderer = ({ node, inline, className, children, ...props }) => {
 
 const Preview = memo(() => {
   const content = useContext(ContentContext);
-  console.log("Running ");
   const memoizedComponents = useMemo(
     () => ({
       code: CodeRenderer,

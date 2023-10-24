@@ -278,6 +278,11 @@ body {
   border: 1px solid #626466;
 }
 
+.markdownWrapper img{
+  border: 2px solid #48baff;
+  width: 40%;
+}
+
 .modes {
   position: fixed;
   display: flex;

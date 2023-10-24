@@ -1,5 +1,4 @@
-import threeDotMenu from "../../../svg/threeDotMenu.svg";
-import { useState } from "react";
+import threeDotMenu from "../../../../svg/threeDotMenu.svg";
 
 function GenerateFile({
   dataPoint,
@@ -10,13 +9,6 @@ function GenerateFile({
   toggleMenu,
   menuOpen,
 }) {
-  // const [showMenu, setShowMenu] = useState(false);
-  // function toggleMenu() {
-  //   setShowMenu((preValue) => !preValue);
-  // }
-
-  // console.log(currentFile.menuOpen);
-
   return (
     <>
       <div className="generateFile">
