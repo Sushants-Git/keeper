@@ -7,11 +7,15 @@ function GenerateFile({
   currentFile,
   deleteFile,
   renameFile,
+  toggleMenu,
+  menuOpen,
 }) {
-  const [showMenu, setShowMenu] = useState(false);
-  function toggleMenu() {
-    setShowMenu((preValue) => !preValue);
-  }
+  // const [showMenu, setShowMenu] = useState(false);
+  // function toggleMenu() {
+  //   setShowMenu((preValue) => !preValue);
+  // }
+
+  // console.log(currentFile.menuOpen);
 
   return (
     <>
@@ -25,17 +29,23 @@ function GenerateFile({
         >
           {dataPoint.name}
         </p>
-        <button data-id={dataPoint.id} onClick={() => toggleMenu()}>
+        <button
+          data-id={dataPoint.id}
+          data-menuopen={dataPoint.menuOpen}
+          onClick={(event) => {
+            toggleMenu(event.target.dataset.id);
+          }}
+        >
           <img data-id={dataPoint.id} src={threeDotMenu} alt="file menu" />
         </button>
-        {showMenu && (
+        {menuOpen && (
           <div className="menuPopUp" data-id={dataPoint.id}>
             <ul>
               <li
                 data-id={dataPoint.id}
                 onClick={(event) => {
                   deleteFile(event.target.dataset.id);
-                  toggleMenu();
+                  toggleMenu(event.target.dataset.id);
                 }}
               >
                 Delete
@@ -44,7 +54,7 @@ function GenerateFile({
                 data-id={dataPoint.id}
                 onClick={(event) => {
                   renameFile(event.target.dataset.id);
-                  toggleMenu();
+                  toggleMenu(event.target.dataset.id);
                 }}
               >
                 Rename

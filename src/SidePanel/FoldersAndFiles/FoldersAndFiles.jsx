@@ -16,8 +16,11 @@ function FoldersAndFiles({
   createFolder,
   deleteFile,
   renameFile,
-  sortFiles
+  sortFiles,
+  toggleMenu,
+  menuOpenArray,
 }) {
+  // console.log(JSON.stringify(menuOpenArray));
   const { currentFile } = useContext(FAFContext);
   return (
     <>
@@ -32,7 +35,7 @@ function FoldersAndFiles({
       </div>
 
       <div className="folderAndFilesContainer">
-        {notes.map((dataPoint) =>
+        {notes.map((dataPoint, index) =>
           dataPoint.files === undefined ? (
             <GenerateFile
               dataPoint={dataPoint}
@@ -41,6 +44,8 @@ function FoldersAndFiles({
               key={dataPoint.id}
               deleteFile={deleteFile}
               renameFile={renameFile}
+              toggleMenu={toggleMenu}
+              menuOpen={menuOpenArray[index].menuOpen}
             />
           ) : (
             <GenerateFolder

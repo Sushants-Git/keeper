@@ -21,6 +21,27 @@ function App() {
     currentFolder == null ? notes[0] : currentFolder.files[0]
   );
   const [currentNoteId, setCurrentNoteId] = useState(currentFile.id);
+  const [menuOpenArray, setMenuOpenArray] = useState(function () {
+    let temp = [];
+    notes.forEach((note) => {
+      if (note.files) {
+        note.files.forEach((file) => {
+          temp.push({
+            id: file.id,
+            menuOpen: false,
+            dateOfCreation: file.dateOfCreation,
+          });
+        });
+      } else {
+        temp.push({
+          id: note.id,
+          menuOpen: false,
+          dateOfCreation: note.dateOfCreation,
+        });
+      }
+    });
+    return temp;
+  });
 
   const editiorRef = useRef(null);
   const previewRef = useRef(null);
@@ -30,13 +51,15 @@ function App() {
 
   // test();
 
+  // console.log(JSON.stringify(menuOpenArray));
+
   function test() {
     notes.map((note, index) =>
       console.log(`Notes[${index}].name: ${note.name}\nid: ${note.id}\n`)
     );
 
     console.log(
-      `currentFile.name: ${currentFile.name}\ncurrentFolder: ${currentFolder}\ncurrentNoteId: ${currentNoteId}\nDateofCreation: ${currentFile.dateOfCreation}`
+      `currentFile.name: ${currentFile.name}\ncurrentFolder: ${currentFolder}\ncurrentNoteId: ${currentNoteId}\nDateofCreation: ${currentFile.dateOfCreation}\nmenuOpen: ${currentFile.menuOpen}`
     );
   }
 
@@ -104,6 +127,29 @@ function App() {
         try {
           jsonData = JSON.parse(jsonContent);
           setNotes((prevValue) => jsonData);
+          setMenuOpenArray((preValue) => {
+            {
+              let temp = [];
+              jsonData.forEach((note) => {
+                if (note.files) {
+                  note.files.forEach((file) => {
+                    temp.push({
+                      id: file.id,
+                      menuOpen: false,
+                      dateOfCreation: file.dateOfCreation,
+                    });
+                  });
+                } else {
+                  temp.push({
+                    id: note.id,
+                    menuOpen: false,
+                    dateOfCreation: note.dateOfCreation,
+                  });
+                }
+              });
+              return temp;
+            }
+          });
           setCurrentFile((prevValue) => jsonData[0]);
           setCurrentFolder((prevValue) => null);
           setCurrentNoteId((prevValue) => jsonData[0].id);
@@ -142,6 +188,10 @@ function App() {
         content: `# ${fileName}`,
       };
       setNotes((prevValue) => [...prevValue, createdFile]);
+      setMenuOpenArray((prevValue) => [
+        ...prevValue,
+        { id: id, menuOpen: false, dateOfCreation: createdFile.dateOfCreation },
+      ]);
       setCurrentFile((prevValue) => createdFile);
       setCurrentFolder((prevValue) => null);
       setCurrentNoteId(id);
@@ -214,10 +264,18 @@ function App() {
         content: `# ${fileName}`,
       };
       setNotes((prevValue) => [createdFile]);
+      setMenuOpenArray((prevValue) => [
+        {
+          id: "111",
+          menuOpen: false,
+          dateOfCreation: createdFile.dateOfCreation,
+        },
+      ]);
       setCurrentFile((prevValue) => createdFile);
       setCurrentNoteId((prevValue) => id);
       return;
     }
+
     setNotes((prevValue) => {
       let temp = [...prevValue];
       for (let i = 0; i < temp.length; i++) {
@@ -225,11 +283,23 @@ function App() {
           temp.splice(i, 1);
         }
       }
+      setCurrentFile((prevValue) => temp[0]);
+      setCurrentNoteId((prevValue) => temp[0].id);
       return temp;
     });
-    setCurrentFile((prevValue) => notes[0]);
+
+    setMenuOpenArray((prevValue) => {
+      let kemp = [...prevValue];
+      for (let i = 0; i < kemp.length; i++) {
+        if (kemp[i].id === id) {
+          kemp.splice(i, 1);
+        }
+      }
+
+      return kemp;
+    });
+
     setCurrentFolder((prevValue) => null);
-    setCurrentNoteId((prevValue) => notes[0].id);
   }
 
   function renameFile(id) {
@@ -259,7 +329,6 @@ function App() {
   }
 
   function sortFiles() {
-    console.log("Running");
     if (!sorted) {
       setNotes((prevValue) => {
         let temp = [...prevValue];
@@ -274,6 +343,19 @@ function App() {
         });
         return temp;
       });
+      // setMenuOpenArray((prevValue) => {
+      //   let temp = [...prevValue];
+      //   temp.sort((a, b) => {
+      //     if (a.dateOfCreation > b.dateOfCreation) {
+      //       return -1;
+      //     }
+      //     if (a.dateOfCreation < b.dateOfCreation) {
+      //       return 1;
+      //     }
+      //     return 0;
+      //   });
+      //   return temp;
+      // });
     } else {
       setNotes((prevValue) => {
         let temp = [...prevValue];
@@ -288,8 +370,37 @@ function App() {
         });
         return temp;
       });
+      // setMenuOpenArray((prevValue) => {
+      //   let temp = [...prevValue];
+      //   temp.sort((a, b) => {
+      //     if (a.dateOfCreation < b.dateOfCreation) {
+      //       return -1;
+      //     }
+      //     if (a.dateOfCreation > b.dateOfCreation) {
+      //       return 1;
+      //     }
+      //     return 0;
+      //   });
+      //   return temp;
+      // });
     }
+    setMenuOpenArray((prevValue) => {
+      let temp = [...prevValue];
+      return temp.map((file) => ({ ...file, menuOpen: false }));
+    });
     setSorted((preValue) => !preValue);
+  }
+
+  function toggleMenu(id) {
+    setMenuOpenArray((prevValue) => {
+      let temp = [...prevValue];
+      return temp.map((file) => {
+        if (file.id === id) {
+          return { ...file, menuOpen: !file.menuOpen };
+        }
+        return { ...file, menuOpen: false };
+      });
+    });
   }
 
   // useEffect(() => {
@@ -369,6 +480,8 @@ function App() {
     renameFile,
     setCurrent,
     sortFiles,
+    toggleMenu,
+    menuOpenArray,
   };
 
   return (
