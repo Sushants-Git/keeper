@@ -10,6 +10,7 @@ import Split from "react-split";
 import { v4 as uuidv4 } from "uuid";
 
 const FAFContext = createContext({});
+const ContentContext = createContext({});
 
 function App() {
   const [notes, setNotes] = useState(data);
@@ -496,7 +497,7 @@ function App() {
       >
         <Modes changeMode={changeMode} />
         {currentMode === "Split" ? (
-          <SplitScreen editiorRef={editiorRef} previewRef={previewRef} />
+          <SplitScreen editiorRef={editiorRef} previewRef={previewRef} currentFile={currentFile}/>
         ) : (
           <NormalScreen
             sidePanelProps={sidePanelProps}
@@ -504,6 +505,7 @@ function App() {
             exportFiles={exportFiles}
             importFiles={importFiles}
             importFile={importFile}
+            currentFile={currentFile}
           />
         )}
       </FAFContext.Provider>
@@ -556,14 +558,16 @@ function App() {
   // );
 }
 
-function SplitScreen({ editiorRef, previewRef }) {
+function SplitScreen({ editiorRef, previewRef,currentFile }) {
   return (
     <Split className="split" sizes={[50, 50]} gutterSize={2}>
       <div className="left-side" id="left-side">
         <Editior editiorRef={editiorRef} previewRef={previewRef} />
       </div>
       <div className="right-side" id="right-side" ref={previewRef}>
-        <Preview previewRef={previewRef} />
+        <ContentContext.Provider value={currentFile.content}>
+          <Preview previewRef={previewRef} />
+        </ContentContext.Provider>
       </div>
     </Split>
   );
@@ -575,6 +579,7 @@ function NormalScreen({
   exportFiles,
   importFiles,
   importFile,
+  currentFile
 }) {
   return (
     <Split className="split" sizes={[25, 75]} gutterSize={2}>
@@ -592,11 +597,19 @@ function NormalScreen({
         <SidePanel {...sidePanelProps} />
       </div>
       <div className="right-side">
-        {currentMode === "Preview" ? <Preview /> : <Editior />}
+        {currentMode === "Preview" ? (
+          <>
+            <ContentContext.Provider value={currentFile.content}>
+              <Preview />
+            </ContentContext.Provider>
+          </>
+        ) : (
+          <Editior />
+        )}
       </div>
     </Split>
   );
 }
 
 export default App;
-export { FAFContext };
+export { FAFContext,ContentContext };
