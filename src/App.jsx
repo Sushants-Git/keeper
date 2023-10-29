@@ -47,8 +47,6 @@ function App() {
     [notes]
   );
 
-  console.log(notes[0])
-
   /*---------------------- Utility Functions Start----------------------*/
 
   function test() {
