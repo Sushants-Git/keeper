@@ -1,7 +1,11 @@
 # Keeper - A minimal and modern markdown editor!!
 ![keeper](https://github.com/Sushants-Git/keeper/assets/100516354/7fb20125-132f-46cb-9e7f-ea64195bc5a3)
 
-https://github.com/Sushants-Git/keeper/assets/100516354/920ab3f1-a374-4662-8ec3-155e00a5f647
+
+
+https://github.com/Sushants-Git/keeper/assets/100516354/0e3fba6a-3a68-428f-b908-11cb6a5af9c8
+
+
 
 ## Table of Contents
 - [Installation](#installation)
